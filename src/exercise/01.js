@@ -3,9 +3,8 @@
 
 import * as React from 'react'
 
-function Greeting() {
-  const defaultName = 'John Doe'
-  const [name, setName] = React.useState(defaultName)
+function Greeting({initialValue = ''}) {
+  const [name, setName] = React.useState(initialValue)
 
   function handleChange(event) {
     setName(event.target.value)
@@ -15,7 +14,7 @@ function Greeting() {
     <div>
       <form>
         <label htmlFor="name">Name: </label>
-        <input onChange={handleChange} id="name" defaultValue={defaultName} />
+        <input onChange={handleChange} id="name" value={initialValue} />
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
     </div>
@@ -23,7 +22,7 @@ function Greeting() {
 }
 
 function App() {
-  return <Greeting />
+  return <Greeting initialValue="John Doe" />
 }
 
 export default App
