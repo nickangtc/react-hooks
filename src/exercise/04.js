@@ -5,8 +5,31 @@ import * as React from 'react'
 
 const FRESH_START_STATE = Array(9).fill(null)
 
+// custom hook
+function useSyncLocalStorageState(key, initialValue) {
+  function serialise(json) {
+    return JSON.stringify(json)
+  }
+  function deserialise(json) {
+    return JSON.parse(json)
+  }
+
+  const [state, setState] = React.useState(
+    () => deserialise(window.localStorage.getItem(key)) || initialValue,
+  )
+
+  React.useEffect(() => {
+    window.localStorage.setItem(key, serialise(state))
+  }, [key, state])
+
+  return [state, setState]
+}
+
 function Board() {
-  const [squares, setSquares] = React.useState(FRESH_START_STATE)
+  const [squares, setSquares] = useSyncLocalStorageState(
+    'squares',
+    FRESH_START_STATE,
+  )
 
   const winner = calculateWinner(squares)
   const nextValue = calculateNextValue(squares)
